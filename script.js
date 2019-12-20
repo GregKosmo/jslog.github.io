@@ -5,6 +5,13 @@ var darkModeButton = document.querySelector('#darkModeButton');
 const COLOR_MODE_CACHE_KEY = 'colorMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
+const TAB_KEY = 9;
+const LEFT_BRACKET = 219;
+const RIGHT_BRACKET = 221;
+const LEFT_PARENTHASES = 57;
+const RIGHT_PARENTHASES = 48;
+const QUOTE = 222;
+
 
 function logToConsole(message) {
     if(output.innerText !== '') {
@@ -51,7 +58,7 @@ function toggleDarkMode() {
 }
 
 function share() {
-    var urlValue = btoa(textarea.value);
+    const urlValue = btoa(textarea.value);
     history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
 }
 
@@ -71,8 +78,47 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-textarea.value = atob(new URL(window.location).searchParams.get('e'));
+const encodedParam = new URL(window.location).searchParams.get('e');
+if(encodedParam) {
+    textarea.value = atob(encodedParam);
+}
+textarea.addEventListener('keydown', event => {
+    const value = textarea.value;
+    const startIndex = textarea.selectionStart;
+    const endIndex = textarea.selectionEnd;
 
+    switch(event.code) {
+        case TAB_KEY:
+            //Insert 4 spaces at index
+            textarea.value = value.slice(0, startIndex) + '    ' + value.slice(endIndex);
+            textarea.selectionStart = startIndex + 4;
+            break;
+
+        case LEFT_BRACKET:
+            //Insert right bracket at ending select index
+            textarea.value = value.slice(0, endIndex) + '}' + value.slice(endIndex);
+            textarea.selectionStart = endIndex;
+            break;
+
+        case RIGHT_BRACKET:
+            //If on right bracket, skip over
+            break;
+
+        case LEFT_PARENTHASES:
+            //Insert right parenthases at ending select index
+            textarea.value = value.slice(0, endIndex) + ')' + value.slice(endIndex);
+            textarea.selectionStart = endIndex;
+            break;
+
+        case RIGHT_PARENTHASES:
+            //If on right parenthases, skip over
+            break;
+
+        case QUOTE:
+            //Insert matching quote at ending select index. Get which it is from event.key
+            break;
+    }
+})
 /**
  * TODO: 
  *  - TypeScript support
