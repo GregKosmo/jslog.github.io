@@ -1,5 +1,12 @@
+var textarea = document.querySelector('#javascriptToRun');
+var output = document.querySelector('#javascriptOutput');
+var darkMode = document.querySelector('#darkModeStylesheet');
+var darkModeButton = document.querySelector('#darkModeButton');
+const COLOR_MODE_CACHE_KEY = 'colorMode';
+const COLOR_MODE_DARK = 'dark';
+const COLOR_MODE_LIGHT = 'light';
+
 function logToConsole(message) {
-    var output = document.querySelector('#javascriptOutput');
     if(output.innerText !== '') {
         output.innerText += '\n';
     }
@@ -7,7 +14,6 @@ function logToConsole(message) {
 }
 
 function logError(error) {
-	var output = document.querySelector('#javascriptOutput');
     if(output.innerText !== '') {
         output.innerText += '\n';
     }
@@ -15,12 +21,10 @@ function logError(error) {
 }
 
 function runJavascript() {
-	var output = document.querySelector('#javascriptOutput');
     while (output.firstChild) {
         output.removeChild(output.firstChild);
     }
 
-	var textarea = document.querySelector('#javascriptToRun');
 	var javascriptToRun = textarea.value;
 
 	javascriptToRun = javascriptToRun.replace('console.log', 'logToConsole');
@@ -33,4 +37,19 @@ function runJavascript() {
 
     document.body.appendChild(script);
     document.body.removeChild(script);
+}
+
+function toggleDarkMode() {
+    darkMode.disabled = !darkMode.disabled;
+    window.localStorage.setItem(COLOR_MODE_CACHE_KEY, darkMode.disabled ? COLOR_MODE_LIGHT : COLOR_MODE_DARK);
+    
+    if(darkMode.disabled) {
+        darkModeButton.innerText = 'Dark Mode';
+    } else {
+        darkModeButton.innerText = 'Light Mode';
+    }
+}
+
+if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK) {
+    toggleDarkMode();
 }

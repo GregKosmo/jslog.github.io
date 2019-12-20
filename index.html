@@ -5,8 +5,8 @@
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 		<title>Js Log</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
-        <script src='script.js'></script>
         <link rel="stylesheet" href="style.css">
+        <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css" disabled="true">
         <link rel="icon" href="favicon.ico">
 	</head>
 
@@ -14,9 +14,11 @@
         <textarea id="javascriptToRun" class="codeTextarea"></textarea>
         <div class="controls">
             <button onclick="runJavascript()">Run</button>
-            <button onclick="share()">Share</button>
-            <button onclick="toggleDarkMode()">Dark Mode</button>
+            <!-- <button onclick="share()">Share</button> -->
+            <button onclick="toggleDarkMode()" id="darkModeButton">Dark Mode</button>
         </div>
 		<pre id="javascriptOutput" class="javascriptLog"></pre>
-	</body>
+    </body>
+    
+    <script src='script.js'></script>
 </html>

@@ -1,0 +1,18 @@
+html {
+    background-color: rgb(59, 59, 59);
+    color: white;
+}
+
+textarea {
+    background-color: rgb(59, 59, 59);
+    color: white;
+}
+
+button {
+    background-color: rgb(59, 59, 59);
+    color: white;
+}
+
+.error {
+    color: rgb(255, 49, 49);
+}
