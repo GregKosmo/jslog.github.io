@@ -15,14 +15,24 @@ body {
     height: 100%;
     box-sizing: border-box;
     resize: none;
+    border: 1px solid rgb(99, 99, 99);
 }
 
 .javascriptLog {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    border: 1px solid rgb(99, 99, 99);
 }
 
 button, textarea {
     font-size: 1rem;
+}
+
+pre {
+    margin: 0px;
+}
+
+.error {
+    color: red;
 }
