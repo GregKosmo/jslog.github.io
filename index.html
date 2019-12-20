@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset='utf-8'>
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -8,9 +8,14 @@
         <link rel="stylesheet" href="style.css">
         <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css" disabled="true">
         <link rel="icon" href="favicon.ico">
+        <meta name="description" content="Lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#3b3b3b"/>
+        <link rel="apple-touch-icon" href="/icon-192.png">
 	</head>
 
 	<body>
+        <label for="javascriptToRun" class="hidden">Code</label>
         <textarea id="javascriptToRun" class="codeTextarea"></textarea>
         <div class="controls">
             <button onclick="runJavascript()">Run</button>

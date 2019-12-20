@@ -1,0 +1,22 @@
+{
+    "short_name": "Js Log",
+    "name": "Js Log",
+    "description": "Lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console",
+    "icons": [
+        {
+            "src": "/icons-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/icons-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/index.html",
+    "background_color": "#3b3b3b",
+    "display": "fullscreen",
+    "scope": "/",
+    "theme_color": "#3367D6"
+}
