@@ -50,6 +50,11 @@ function toggleDarkMode() {
     }
 }
 
+function share() {
+    var urlValue = btoa(textarea.value);
+    history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+}
+
 if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK) {
     toggleDarkMode();
 }
@@ -65,3 +70,11 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+
+textarea.value = atob(new URL(window.location).searchParams.get('e'));
+
+/**
+ * TODO: 
+ *  - TypeScript support
+ *  - Basic features like tabbing, auto close "{", "(", """, and "'" symbols. 
+ */
