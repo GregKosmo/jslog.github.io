@@ -59,7 +59,9 @@ function toggleDarkMode() {
 
 function share() {
     const urlValue = btoa(textarea.value);
-    history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+    if(urlValue) {
+        history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+    }
 }
 
 if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK) {
@@ -82,43 +84,69 @@ const encodedParam = new URL(window.location).searchParams.get('e');
 if(encodedParam) {
     textarea.value = atob(encodedParam);
 }
+
 textarea.addEventListener('keydown', event => {
     const value = textarea.value;
     const startIndex = textarea.selectionStart;
     const endIndex = textarea.selectionEnd;
 
-    switch(event.code) {
+    switch(event.keyCode) {
         case TAB_KEY:
+            event.preventDefault();
             //Insert 4 spaces at index
-            textarea.value = value.slice(0, startIndex) + '    ' + value.slice(endIndex);
-            textarea.selectionStart = startIndex + 4;
-            break;
+            if(event.shiftKey) {
 
-        case LEFT_BRACKET:
-            //Insert right bracket at ending select index
-            textarea.value = value.slice(0, endIndex) + '}' + value.slice(endIndex);
-            textarea.selectionStart = endIndex;
-            break;
-
-        case RIGHT_BRACKET:
-            //If on right bracket, skip over
-            break;
-
-        case LEFT_PARENTHASES:
-            //Insert right parenthases at ending select index
-            textarea.value = value.slice(0, endIndex) + ')' + value.slice(endIndex);
-            textarea.selectionStart = endIndex;
+            } else {
+                document.execCommand('insertText', false, '    ');
+            }
             break;
 
         case RIGHT_PARENTHASES:
             //If on right parenthases, skip over
+            if(startIndex === endIndex && value.charAt(endIndex) === ')') {
+                event.preventDefault();
+                textarea.selectionStart = endIndex + 1;
+            }
+            break;
+
+        case RIGHT_BRACKET:
+            //If on right bracket, skip over
+            if(startIndex === endIndex && value.charAt(endIndex) === '}') {
+                event.preventDefault();
+                textarea.selectionStart = endIndex + 1;
+            }
+            break;
+    }
+});
+
+textarea.addEventListener('keyup', event => {
+    const value = textarea.value;
+    const startIndex = textarea.selectionStart;
+    const endIndex = textarea.selectionEnd;
+
+    switch(event.keyCode) {
+        case LEFT_BRACKET:
+            //Insert right bracket at ending select index
+            document.execCommand('insertText', false, '}');
+            textarea.selectionStart = endIndex;
+            textarea.selectionEnd = endIndex;
+            break;
+
+        case LEFT_PARENTHASES:
+            //Insert right parenthases at ending select index
+            document.execCommand('insertText', false, ')');
+            textarea.selectionStart = endIndex;
+            textarea.selectionEnd = endIndex;
             break;
 
         case QUOTE:
             //Insert matching quote at ending select index. Get which it is from event.key
+            document.execCommand('insertText', false, event.key);
+            textarea.selectionStart = endIndex;
+            textarea.selectionEnd = endIndex;
             break;
     }
-})
+});
 /**
  * TODO: 
  *  - TypeScript support
