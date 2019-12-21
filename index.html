@@ -15,14 +15,16 @@
 	</head>
 
 	<body>
-        <label for="javascriptToRun" class="hidden">Code</label>
-        <textarea id="javascriptToRun" class="codeTextarea"></textarea>
-        <div class="controls">
-            <button onclick="runJavascript()">Run</button>
-            <button onclick="share()">Share</button>
-            <button onclick="toggleDarkMode()" id="darkModeButton">Dark Mode</button>
-        </div>
-		<pre id="javascriptOutput" class="javascriptLog"></pre>
+        <form class="codeForm" onsubmit="runJavascript()">
+            <label for="javascriptToRun" class="hidden">Code</label>
+            <textarea id="javascriptToRun" class="codeTextarea"></textarea>
+            <div class="controls">
+                <button onclick="runJavascript()">Run</button>
+                <button onclick="share()" type="button">Share</button>
+                <button onclick="toggleDarkMode()" type="button" id="darkModeButton">Dark Mode</button>
+            </div>
+            <pre id="javascriptOutput" class="javascriptLog"></pre>
+        </form>
     </body>
     
     <script src='script.js'></script>

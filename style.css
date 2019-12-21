@@ -6,6 +6,10 @@ html {
 body {
     margin: 0px;
     height: 100%;
+}
+
+.codeForm {
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -16,6 +20,8 @@ body {
     box-sizing: border-box;
     resize: none;
     border: 1px solid rgb(99, 99, 99);
+    padding: 8px;
+    tab-size: 4;
 }
 
 .javascriptLog {
@@ -23,6 +29,15 @@ body {
     height: 100%;
     box-sizing: border-box;
     border: 1px solid rgb(99, 99, 99);
+    padding: 8px;
+}
+
+.controls {
+    margin: 0 auto;
+}
+
+button {
+    padding: 4px 8px;
 }
 
 button, textarea {

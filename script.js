@@ -58,6 +58,7 @@ function toggleDarkMode() {
 }
 
 function share() {
+    //TODO: Copy url to clipboard
     const urlValue = btoa(textarea.value);
     if(urlValue) {
         history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
@@ -97,7 +98,7 @@ textarea.addEventListener('keydown', event => {
             if(event.shiftKey) {
 
             } else {
-                document.execCommand('insertText', false, '    ');
+                document.execCommand('insertText', false, '\t');
             }
             break;
 
