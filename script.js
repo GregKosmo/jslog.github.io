@@ -92,11 +92,27 @@ textarea.addEventListener('keydown', event => {
     const endIndex = textarea.selectionEnd;
 
     switch(event.keyCode) {
+        case LEFT_BRACKET:
+            //Insert right bracket at ending select index
+            document.execCommand('insertText', false, '}');
+            textarea.selectionStart = endIndex;
+            textarea.selectionEnd = endIndex;
+            break;
+
+        case LEFT_PARENTHASES:
+            //Insert right parenthases at ending select index
+            document.execCommand('insertText', false, ')');
+            textarea.selectionStart = endIndex;
+            textarea.selectionEnd = endIndex;
+            break;
+
         case TAB_KEY:
             event.preventDefault();
             //Insert 4 spaces at index
             if(event.shiftKey) {
-
+                if(value.charAt(startIndex - 1) === '\t') {
+                    document.execCommand('delete');
+                }
             } else {
                 document.execCommand('insertText', false, '\t');
             }
@@ -116,28 +132,6 @@ textarea.addEventListener('keydown', event => {
                 event.preventDefault();
                 textarea.selectionStart = endIndex + 1;
             }
-            break;
-    }
-});
-
-textarea.addEventListener('keyup', event => {
-    const value = textarea.value;
-    const startIndex = textarea.selectionStart;
-    const endIndex = textarea.selectionEnd;
-
-    switch(event.keyCode) {
-        case LEFT_BRACKET:
-            //Insert right bracket at ending select index
-            document.execCommand('insertText', false, '}');
-            textarea.selectionStart = endIndex;
-            textarea.selectionEnd = endIndex;
-            break;
-
-        case LEFT_PARENTHASES:
-            //Insert right parenthases at ending select index
-            document.execCommand('insertText', false, ')');
-            textarea.selectionStart = endIndex;
-            textarea.selectionEnd = endIndex;
             break;
 
         case QUOTE:
