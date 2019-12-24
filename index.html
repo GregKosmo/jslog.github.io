@@ -15,14 +15,18 @@
 	</head>
 
 	<body>
+        <div id="applicationMessage" class="applicationMessage"></div>
+
         <form class="codeForm">
             <label for="javascriptToRun" class="hidden">Code</label>
             <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..."></textarea>
+
             <div class="controls">
                 <button onclick="runJavascript()" type="button">Run</button>
                 <button onclick="share()" type="button">Share</button>
                 <button onclick="toggleDarkMode()" type="button" id="darkModeButton">Dark Mode</button>
             </div>
+            
             <pre id="javascriptOutput" class="javascriptLog"></pre>
         </form>
     </body>

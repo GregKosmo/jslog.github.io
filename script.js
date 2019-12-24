@@ -2,6 +2,7 @@ var textarea = document.querySelector('#javascriptToRun');
 var output = document.querySelector('#javascriptOutput');
 var darkMode = document.querySelector('#darkModeStylesheet');
 var darkModeButton = document.querySelector('#darkModeButton');
+var applicationMessage = document.querySelector('#applicationMessage');
 const COLOR_MODE_CACHE_KEY = 'colorMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
@@ -13,11 +14,19 @@ const RIGHT_PARENTHASES = 48;
 const QUOTE = 222;
 const ENTER = 13;
 
+function displayApplicationMessage(message) {
+    applicationMessage.innerText = message;
+    applicationMessage.classList.add('shown');
+
+    setTimeout(() => {
+        applicationMessage.classList.remove('shown');
+    }, 3000)
+}
+
 function resetConsole() {
     while (output.firstChild) {
         output.removeChild(output.firstChild);
     }
-    logToConsole('jslog-output:');
 }
 
 function logToConsole(message) {
@@ -60,11 +69,17 @@ function toggleDarkMode() {
     }
 }
 
-function share() {
+async function share() {
     //TODO: Copy url to clipboard
     const urlValue = btoa(textarea.value);
     if(urlValue) {
         history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+        try {
+            window.navigator.clipboard.writeText(window.location.href);
+            displayApplicationMessage('URL Copied to Clipboard');
+        } catch(e) {
+            displayApplicationMessage('Error Copying URL to Clipboard');
+        }
     }
 }
 
@@ -88,6 +103,7 @@ resetConsole();
 const encodedParam = new URL(window.location).searchParams.get('e');
 if(encodedParam) {
     textarea.value = atob(encodedParam);
+    runJavascript();
 }
 
 textarea.addEventListener('keydown', event => {
@@ -138,12 +154,17 @@ textarea.addEventListener('keydown', event => {
         case TAB_KEY:
             event.preventDefault();
             //Insert 4 spaces at index
-            if(event.shiftKey) {
-                if(value.charAt(startIndex - 1) === '\t') {
-                    document.execCommand('delete');
-                }
+            if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '}' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
+                textarea.selectionStart = endIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
             } else {
-                document.execCommand('insertText', false, '\t');
+                if(event.shiftKey) {
+                    if(value.charAt(startIndex - 1) === '\t') {
+                        document.execCommand('delete');
+                    }
+                } else {
+                    document.execCommand('insertText', false, '\t');
+                }
             }
             break;
 
