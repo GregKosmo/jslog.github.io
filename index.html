@@ -5,8 +5,8 @@
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 		<title>Js Log</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel="stylesheet" href="style.css?ver=2">
-        <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css" disabled="true">
+        <link rel="stylesheet" href="style.css?ver=3">
+        <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css?ver=2" disabled="true">
         <link rel="icon" href="favicon.ico">
         <meta name="description" content="Lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console">
         <link rel="manifest" href="/manifest.json">
@@ -15,11 +15,11 @@
 	</head>
 
 	<body>
-        <form class="codeForm" onsubmit="runJavascript()">
+        <form class="codeForm">
             <label for="javascriptToRun" class="hidden">Code</label>
-            <textarea id="javascriptToRun" class="codeTextarea"></textarea>
+            <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..."></textarea>
             <div class="controls">
-                <button onclick="runJavascript()">Run</button>
+                <button onclick="runJavascript()" type="button">Run</button>
                 <button onclick="share()" type="button">Share</button>
                 <button onclick="toggleDarkMode()" type="button" id="darkModeButton">Dark Mode</button>
             </div>
@@ -27,5 +27,5 @@
         </form>
     </body>
     
-    <script src='script.js?ver=2'></script>
+    <script src='script.js?ver=3'></script>
 </html>

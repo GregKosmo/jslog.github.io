@@ -1,10 +1,5 @@
 var CACHE_NAME = 'jslog-cache-v1';
-var urlsToCache = [
-  '/',
-  '/style.css',
-  '/darkmode.css',
-  '/script.js'
-];
+var urlsToCache = [];
 
 self.addEventListener('install', function(event) {
   // Perform install steps

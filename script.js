@@ -11,7 +11,14 @@ const RIGHT_BRACKET = 221;
 const LEFT_PARENTHASES = 57;
 const RIGHT_PARENTHASES = 48;
 const QUOTE = 222;
+const ENTER = 13;
 
+function resetConsole() {
+    while (output.firstChild) {
+        output.removeChild(output.firstChild);
+    }
+    logToConsole('jslog-output:');
+}
 
 function logToConsole(message) {
     if(output.innerText !== '') {
@@ -28,14 +35,10 @@ function logError(error) {
 }
 
 function runJavascript() {
-    while (output.firstChild) {
-        output.removeChild(output.firstChild);
-    }
+    resetConsole();
 
 	var javascriptToRun = textarea.value;
-
 	javascriptToRun = javascriptToRun.replace('console.log', 'logToConsole');
-
     var script = document.createElement('script');
     
     script.text = 'try {\n'
@@ -81,6 +84,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+resetConsole();
 const encodedParam = new URL(window.location).searchParams.get('e');
 if(encodedParam) {
     textarea.value = atob(encodedParam);
@@ -94,16 +98,41 @@ textarea.addEventListener('keydown', event => {
     switch(event.keyCode) {
         case LEFT_BRACKET:
             //Insert right bracket at ending select index
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, '{');
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
             document.execCommand('insertText', false, '}');
-            textarea.selectionStart = endIndex;
-            textarea.selectionEnd = endIndex;
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
             break;
 
         case LEFT_PARENTHASES:
             //Insert right parenthases at ending select index
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, '(');
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
             document.execCommand('insertText', false, ')');
-            textarea.selectionStart = endIndex;
-            textarea.selectionEnd = endIndex;
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            break;
+
+        case QUOTE:
+            //Insert matching quote at ending select index. Get which it is from event.key
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, event.key);
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            document.execCommand('insertText', false, event.key);
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
             break;
 
         case TAB_KEY:
@@ -134,11 +163,14 @@ textarea.addEventListener('keydown', event => {
             }
             break;
 
-        case QUOTE:
-            //Insert matching quote at ending select index. Get which it is from event.key
-            document.execCommand('insertText', false, event.key);
-            textarea.selectionStart = endIndex;
-            textarea.selectionEnd = endIndex;
+        case ENTER:
+            //If certain characters, enter twice and move up
+            if(value.charAt(endIndex) === '}' && value.charAt(startIndex - 1) === '{') {
+                event.preventDefault();
+                document.execCommand('insertText', false , '\n\t\n');
+                textarea.selectionStart = endIndex + 2;
+                textarea.selectionEnd = endIndex + 2;
+            }
             break;
     }
 });
