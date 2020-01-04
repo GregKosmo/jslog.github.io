@@ -44,6 +44,7 @@ body {
     text-align: center;
     transition: .3s all;
     transition-property: top;
+    box-sizing: border-box;
 }
 
 .applicationMessage.shown {
