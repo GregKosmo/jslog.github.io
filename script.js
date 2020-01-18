@@ -48,7 +48,7 @@ function runJavascript() {
     resetConsole();
 
 	var javascriptToRun = textarea.value;
-	javascriptToRun = javascriptToRun.replace('console.log', 'logToConsole');
+	javascriptToRun = javascriptToRun.split('console.log').join('logToConsole');
     var script = document.createElement('script');
     
     script.text = 'try {\n'
