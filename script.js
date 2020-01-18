@@ -6,13 +6,14 @@ var applicationMessage = document.querySelector('#applicationMessage');
 const COLOR_MODE_CACHE_KEY = 'colorMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
-const TAB_KEY = 9;
-const LEFT_BRACKET = 219;
-const RIGHT_BRACKET = 221;
-const LEFT_PARENTHASES = 57;
-const RIGHT_PARENTHASES = 48;
-const QUOTE = 222;
-const ENTER = 13;
+const TAB_KEY = 'Tab';
+const LEFT_BRACKET = '{';
+const RIGHT_BRACKET = '}';
+const LEFT_PARENTHASES = '(';
+const RIGHT_PARENTHASES = ')';
+const SINGLE_QUOTE = "'";
+const DOUBLE_QUOTE = '"';
+const ENTER = 'Enter';
 
 function displayApplicationMessage(message) {
     applicationMessage.innerText = message;
@@ -111,7 +112,7 @@ textarea.addEventListener('keydown', event => {
     const startIndex = textarea.selectionStart;
     const endIndex = textarea.selectionEnd;
 
-    switch(event.keyCode) {
+    switch(event.key) {
         case LEFT_BRACKET:
             //Insert right bracket at ending select index
             event.preventDefault();
@@ -138,7 +139,7 @@ textarea.addEventListener('keydown', event => {
             textarea.selectionEnd = endIndex + 1;
             break;
 
-        case QUOTE:
+        case SINGLE_QUOTE || DOUBLE_QUOTE:
             //Insert matching quote at ending select index. Get which it is from event.key
             event.preventDefault();
             textarea.selectionStart = startIndex;
@@ -153,8 +154,8 @@ textarea.addEventListener('keydown', event => {
 
         case TAB_KEY:
             event.preventDefault();
-            //Insert 4 spaces at index
-            if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '}' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
+            //Insert tab at index
+            if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
                 textarea.selectionStart = endIndex + 1;
                 textarea.selectionEnd = endIndex + 1;
             } else {
@@ -197,6 +198,5 @@ textarea.addEventListener('keydown', event => {
 });
 /**
  * TODO: 
- *  - TypeScript support
- *  - Basic features like tabbing, auto close "{", "(", """, and "'" symbols. 
+ *  - Basic features like tabbing, auto close "{", "(", """, and "'" symbols.
  */
