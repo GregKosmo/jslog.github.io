@@ -140,6 +140,10 @@ pre {
     padding: 8px;
 }
 
+.dialog .footer button {
+    margin: 0 4px;
+}
+
 .centered {
     text-align: center;
 }
@@ -158,4 +162,8 @@ pre {
 
 .embedIframe {
     width: 100%;
+}
+
+.marginSmall {
+    margin: 4px;
 }
