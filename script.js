@@ -108,93 +108,95 @@ if(encodedParam) {
 }
 
 textarea.addEventListener('keydown', event => {
-    const value = textarea.value;
-    const startIndex = textarea.selectionStart;
-    const endIndex = textarea.selectionEnd;
-
-    switch(event.key) {
-        case LEFT_BRACKET:
-            //Insert right bracket at ending select index
-            event.preventDefault();
-            textarea.selectionStart = startIndex;
-            textarea.selectionEnd = startIndex;
-            document.execCommand('insertText', false, '{');
-            textarea.selectionStart = endIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            document.execCommand('insertText', false, '}');
-            textarea.selectionStart = startIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            break;
-
-        case LEFT_PARENTHASES:
-            //Insert right parenthases at ending select index
-            event.preventDefault();
-            textarea.selectionStart = startIndex;
-            textarea.selectionEnd = startIndex;
-            document.execCommand('insertText', false, '(');
-            textarea.selectionStart = endIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            document.execCommand('insertText', false, ')');
-            textarea.selectionStart = startIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            break;
-
-        case SINGLE_QUOTE || DOUBLE_QUOTE:
-            //Insert matching quote at ending select index. Get which it is from event.key
-            event.preventDefault();
-            textarea.selectionStart = startIndex;
-            textarea.selectionEnd = startIndex;
-            document.execCommand('insertText', false, event.key);
-            textarea.selectionStart = endIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            document.execCommand('insertText', false, event.key);
-            textarea.selectionStart = startIndex + 1;
-            textarea.selectionEnd = endIndex + 1;
-            break;
-
-        case TAB_KEY:
-            event.preventDefault();
-            //Insert tab at index
-            if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
+    setTimeout(() => {
+        const value = textarea.value;
+        const startIndex = textarea.selectionStart;
+        const endIndex = textarea.selectionEnd;
+    
+        switch(event.key) {
+            case LEFT_BRACKET:
+                //Insert right bracket at ending select index
+                event.preventDefault();
+                textarea.selectionStart = startIndex;
+                textarea.selectionEnd = startIndex;
+                document.execCommand('insertText', false, '{');
                 textarea.selectionStart = endIndex + 1;
                 textarea.selectionEnd = endIndex + 1;
-            } else {
-                if(event.shiftKey) {
-                    if(value.charAt(startIndex - 1) === '\t') {
-                        document.execCommand('delete');
-                    }
+                document.execCommand('insertText', false, '}');
+                textarea.selectionStart = startIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
+                break;
+    
+            case LEFT_PARENTHASES:
+                //Insert right parenthases at ending select index
+                event.preventDefault();
+                textarea.selectionStart = startIndex;
+                textarea.selectionEnd = startIndex;
+                document.execCommand('insertText', false, '(');
+                textarea.selectionStart = endIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
+                document.execCommand('insertText', false, ')');
+                textarea.selectionStart = startIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
+                break;
+    
+            case SINGLE_QUOTE || DOUBLE_QUOTE:
+                //Insert matching quote at ending select index. Get which it is from event.key
+                event.preventDefault();
+                textarea.selectionStart = startIndex;
+                textarea.selectionEnd = startIndex;
+                document.execCommand('insertText', false, event.key);
+                textarea.selectionStart = endIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
+                document.execCommand('insertText', false, event.key);
+                textarea.selectionStart = startIndex + 1;
+                textarea.selectionEnd = endIndex + 1;
+                break;
+    
+            case TAB_KEY:
+                event.preventDefault();
+                //Insert tab at index
+                if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
+                    textarea.selectionStart = endIndex + 1;
+                    textarea.selectionEnd = endIndex + 1;
                 } else {
-                    document.execCommand('insertText', false, '\t');
+                    if(event.shiftKey) {
+                        if(value.charAt(startIndex - 1) === '\t') {
+                            document.execCommand('delete');
+                        }
+                    } else {
+                        document.execCommand('insertText', false, '\t');
+                    }
                 }
-            }
-            break;
-
-        case RIGHT_PARENTHASES:
-            //If on right parenthases, skip over
-            if(startIndex === endIndex && value.charAt(endIndex) === ')') {
-                event.preventDefault();
-                textarea.selectionStart = endIndex + 1;
-            }
-            break;
-
-        case RIGHT_BRACKET:
-            //If on right bracket, skip over
-            if(startIndex === endIndex && value.charAt(endIndex) === '}') {
-                event.preventDefault();
-                textarea.selectionStart = endIndex + 1;
-            }
-            break;
-
-        case ENTER:
-            //If certain characters, enter twice and move up
-            if(value.charAt(endIndex) === '}' && value.charAt(startIndex - 1) === '{') {
-                event.preventDefault();
-                document.execCommand('insertText', false , '\n\t\n');
-                textarea.selectionStart = endIndex + 2;
-                textarea.selectionEnd = endIndex + 2;
-            }
-            break;
-    }
+                break;
+    
+            case RIGHT_PARENTHASES:
+                //If on right parenthases, skip over
+                if(startIndex === endIndex && value.charAt(endIndex) === ')') {
+                    event.preventDefault();
+                    textarea.selectionStart = endIndex + 1;
+                }
+                break;
+    
+            case RIGHT_BRACKET:
+                //If on right bracket, skip over
+                if(startIndex === endIndex && value.charAt(endIndex) === '}') {
+                    event.preventDefault();
+                    textarea.selectionStart = endIndex + 1;
+                }
+                break;
+    
+            case ENTER:
+                //If certain characters, enter twice and move up
+                if(value.charAt(endIndex) === '}' && value.charAt(startIndex - 1) === '{') {
+                    event.preventDefault();
+                    document.execCommand('insertText', false , '\n\t\n');
+                    textarea.selectionStart = endIndex + 2;
+                    textarea.selectionEnd = endIndex + 2;
+                }
+                break;
+        }
+    })
 });
 /**
  * TODO: 
