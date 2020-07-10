@@ -139,7 +139,11 @@ function toggleBooleanMode(enabled) {
         params.delete('boolean');
     }
 
-    history.pushState(undefined, 'Js Log', params.toString() === '' ? `${location.host}${location.pathname === '/' ? '' : location.pathname}` : `?${params.toString()}`);
+    if(params.toString() === '') {
+        window.history.pushState(undefined, 'Js Log', window.location.pathname);
+    } else {
+        history.pushState(undefined, 'Js Log', `?${params.toString()}`);
+    }
 }
 
 function toggleAutoLogMode(enabled) {
@@ -157,7 +161,11 @@ function toggleAutoLogMode(enabled) {
         params.delete('autoLog');
     }
 
-    history.pushState(undefined, 'Js Log', params.toString() === '' ? `${location.host}${location.pathname === '/' ? '' : location.pathname}` : `?${params.toString()}`);
+    if(params.toString() === '') {
+        window.history.pushState(undefined, 'Js Log', window.location.pathname);
+    } else {
+        history.pushState(undefined, 'Js Log', `?${params.toString()}`);
+    }
 }
 
 async function share() {
