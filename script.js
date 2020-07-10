@@ -140,9 +140,9 @@ function toggleBooleanMode(enabled) {
     }
 
     if(params.toString() === '') {
-        window.history.pushState(undefined, 'Js Log', window.location.pathname);
+        window.history.replaceState(undefined, 'Js Log', window.location.pathname);
     } else {
-        history.pushState(undefined, 'Js Log', `?${params.toString()}`);
+        history.replaceState(undefined, 'Js Log', `?${params.toString()}`);
     }
 }
 
@@ -162,9 +162,9 @@ function toggleAutoLogMode(enabled) {
     }
 
     if(params.toString() === '') {
-        window.history.pushState(undefined, 'Js Log', window.location.pathname);
+        window.history.replaceState(undefined, 'Js Log', window.location.pathname);
     } else {
-        history.pushState(undefined, 'Js Log', `?${params.toString()}`);
+        history.replaceState(undefined, 'Js Log', `?${params.toString()}`);
     }
 }
 
