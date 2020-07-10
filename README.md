@@ -17,9 +17,15 @@ Since its inception there have been feature additions to make getting and sharin
  - Option saving
  
 Boolean mode logs the result of your text's evaluation to true or false.
+
 Auto log mode logs the result of your text's evaluation.
+
 Embedding allows you to include a code snippet on your page. Retains boolean and auto log modes. Removes UI components to only show code and result.
-Sharing creates a shareable link and copies it to your clipboard. On mobile it opens the native OS sharing functionality via the web share API
+
+Sharing creates a shareable link and copies it to your clipboard. On mobile it opens the native OS sharing functionality via the web share API.
+
 Basic code completion features like auto-closing parenthases, brackes, quotes, etc help you write code quicker. Mostly in place to keep the transition between vscode and the app smoother. Because of some of these features though, unfortunately the app does not play will with Firefox. The method by which the features are applied is currently bugged in Firefox. Check the closed issues if you'd like to find the link to follow.
-Dark mode saves your eyeballs. Based on your OS's theme setting initially, you can override it via the options if you'd like
+
+Dark mode saves your eyeballs. Based on your OS's theme setting initially, you can override it via the options if you'd like.
+
 Option saving allows you to configure the app to behave how you'd like by default. Always use auto log mode? Save the option and the app will always load in that mode.
