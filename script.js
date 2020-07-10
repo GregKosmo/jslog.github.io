@@ -130,6 +130,16 @@ function toggleBooleanMode(enabled) {
     }
 
     booleanMode = enabled;
+
+    const params = new URLSearchParams(window.location.search);
+
+    if(booleanMode) {
+        params.set('boolean', 'true');
+    } else {
+        params.delete('boolean');
+    }
+
+    history.pushState(undefined, 'Js Log', params.toString() === '' ? `${location.host}${location.pathname === '/' ? '' : location.pathname}` : `?${params.toString()}`);
 }
 
 function toggleAutoLogMode(enabled) {
@@ -138,11 +148,21 @@ function toggleAutoLogMode(enabled) {
     }
 
     autoLogMode = enabled;
+
+    const params = new URLSearchParams(window.location.search);
+
+    if(autoLogMode) {
+        params.set('autoLog', 'true');
+    } else {
+        params.delete('autoLog');
+    }
+
+    history.pushState(undefined, 'Js Log', params.toString() === '' ? `${location.host}${location.pathname === '/' ? '' : location.pathname}` : `?${params.toString()}`);
 }
 
 async function share() {
-    const urlValue = btoa(textarea.value);
-    history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+    const urlValue = encodeURIComponent(btoa(textarea.value));
+    history.pushState(undefined, 'Js Log', `?e=${urlValue}${booleanMode ? '&boolean=true' : ''}${autoLogMode ? '&autoLog=true' : ''}`);
 
     try {
         await navigator.share({
@@ -155,9 +175,9 @@ async function share() {
     }
 }
 
-function writeToClipboard(string, successMessage, failMessage) {
+async function writeToClipboard(string, successMessage, failMessage) {
     try {
-        window.navigator.clipboard.writeText(string);
+        await window.navigator.clipboard.writeText(string);
         displayApplicationMessage(successMessage);
     } catch(e) {
         displayApplicationMessage(failMessage);
@@ -165,7 +185,7 @@ function writeToClipboard(string, successMessage, failMessage) {
 }
 
 function embed() {
-    const urlValue = `${location.protocol}//${location.host}${location.pathname === '/' ? '' : location.pathname}?e=${btoa(textarea.value)}&embed=true`;
+    const urlValue = `${location.protocol}//${location.host}${location.pathname === '/' ? '' : location.pathname}?e=${encodeURIComponent(btoa(textarea.value))}${booleanMode ? '&boolean=true' : ''}${autoLogMode ? '&autoLog=true' : ''}&embed=true`;
     
     embedTextarea.value = `<iframe src=${urlValue}></iframe>`;
     embedIframe.src = urlValue;
@@ -193,11 +213,11 @@ if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK || (win
     toggleDarkMode(true);
 }
 
-if(window.localStorage.getItem(BOOLEAN_MODE_CACHE_KEY) === TRUE_VALUE) {
+if(window.localStorage.getItem(BOOLEAN_MODE_CACHE_KEY) === TRUE_VALUE || urlParams.get('boolean')) {
     toggleBooleanMode(true);
 }
 
-if(window.localStorage.getItem(AUTO_LOG_MODE_CACHE_KEY) === TRUE_VALUE) {
+if(window.localStorage.getItem(AUTO_LOG_MODE_CACHE_KEY) === TRUE_VALUE || urlParams.get('autoLog')) {
     toggleAutoLogMode(true);
 }
 
@@ -222,7 +242,7 @@ if('serviceWorker' in navigator) {
 resetConsole();
 const encodedParam = new URL(window.location).searchParams.get('e');
 if(encodedParam) {
-    textarea.value = atob(encodedParam);
+    textarea.value = decodeURIComponent(atob(encodedParam));
     runJavascript();
 }
 
@@ -352,7 +372,3 @@ textarea.addEventListener('keydown', event => {
             break;
     }
 });
-/**
- * TODO: 
- * - move light mode to options, make run farthest right button
- */
