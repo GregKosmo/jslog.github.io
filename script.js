@@ -165,7 +165,7 @@ function writeToClipboard(string, successMessage, failMessage) {
 }
 
 function embed() {
-    const urlValue = `${location.host}${location.pathname}?e=${btoa(textarea.value)}&embed=true`;
+    const urlValue = `${location.protocol}${location.host}${location.pathname === '/' ? '' : location.pathname}?e=${btoa(textarea.value)}&embed=true`;
     
     embedTextarea.value = `<iframe src=${urlValue}></iframe>`;
     embedIframe.src = urlValue;
