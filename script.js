@@ -2,14 +2,22 @@ var textarea = document.querySelector('#javascriptToRun');
 var output = document.querySelector('#javascriptOutput');
 var darkMode = document.querySelector('#darkModeStylesheet');
 var darkModeCheckbox = document.querySelector('#darkModeCheckbox');
+var autoLogModeCheckbox = document.querySelector('#autoLogModeCheckbox');
+var booleanModeCheckbox = document.querySelector('#booleanModeCheckbox');
 var applicationMessage = document.querySelector('#applicationMessage');
 var embedTextarea = document.querySelector('#embedTextarea');
 var embedIframe = document.querySelector('#embedIframe');
 var htmlInstance = document.querySelector('#html');
+var autoLogMode;
+var booleanMode;
 const urlParams = new URLSearchParams(window.location.search);
 const COLOR_MODE_CACHE_KEY = 'colorMode';
+const BOOLEAN_MODE_CACHE_KEY = 'booleanMode';
+const AUTO_LOG_MODE_CACHE_KEY = 'autoLogMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
+const TRUE_VALUE = 'true';
+const FALSE_VALUE = 'false';
 const TAB_KEY = 'Tab';
 const LEFT_BRACKET = '{';
 const RIGHT_BRACKET = '}';
@@ -76,24 +84,35 @@ function logError(error) {
 function runJavascript() {
     resetConsole();
 
-    try {
-        var javascriptToRun = textarea.value;
-        javascriptToRun = javascriptToRun.split('console.log').join('logToConsole');
-        var script = document.createElement('script');
-        
-        script.text = 'try {\n';
-        script.text += 'function runTest() {\n';
-        script.text += javascriptToRun;
-        script.text += '}\n';
-        script.text += 'runTest()';
-        script.text += '\n} catch(e) {\nlogError(e)\n}';
+    if(textarea.value) {
+        try {
+            var javascriptToRun = textarea.value;
+            javascriptToRun = javascriptToRun.split('console.log').join('logToConsole');
+            var script = document.createElement('script');
+            
+            script.text = 'try {\n';
+            script.text += 'function runTest() {\n';
     
-        eval(script.text);
-        resetConsole();
-        document.body.appendChild(script);
-        document.body.removeChild(script);
-    } catch(e) {
-        logError(e);
+            if(autoLogMode) {
+                script.text += `logToConsole(${javascriptToRun})`
+            } else if(booleanMode) {
+                script.text += `logToConsole(${javascriptToRun} ? true : false)`
+            } else {
+                script.text += javascriptToRun;
+            }
+    
+    
+            script.text += '}\n';
+            script.text += 'runTest()';
+            script.text += '\n} catch(e) {\nlogError(e)\n}';
+        
+            eval(script.text);
+            resetConsole();
+            document.body.appendChild(script);
+            document.body.removeChild(script);
+        } catch(e) {
+            logError(e);
+        }
     }
 }
 
@@ -103,7 +122,22 @@ function toggleDarkMode(enabled) {
     }
 
     darkMode.disabled = !enabled;
-    window.localStorage.setItem(COLOR_MODE_CACHE_KEY, darkMode.disabled ? COLOR_MODE_LIGHT : COLOR_MODE_DARK);
+}
+
+function toggleBooleanMode(enabled) {
+    if(booleanModeCheckbox.checked !== enabled) {
+        booleanModeCheckbox.checked = enabled;
+    }
+
+    booleanMode = enabled;
+}
+
+function toggleAutoLogMode(enabled) {
+    if(autoLogModeCheckbox.checked !== enabled) {
+        autoLogModeCheckbox.checked = enabled;
+    }
+
+    autoLogMode = enabled;
 }
 
 async function share() {
@@ -137,6 +171,17 @@ function embed() {
     embedIframe.src = urlValue;
 }
 
+function saveOptions() {
+    try {
+        window.localStorage.setItem(COLOR_MODE_CACHE_KEY, darkModeCheckbox.checked ? COLOR_MODE_DARK : COLOR_MODE_LIGHT);
+        window.localStorage.setItem(AUTO_LOG_MODE_CACHE_KEY, autoLogModeCheckbox.checked ? TRUE_VALUE : FALSE_VALUE);
+        window.localStorage.setItem(BOOLEAN_MODE_CACHE_KEY, booleanModeCheckbox.checked ? TRUE_VALUE : FALSE_VALUE);
+        displayApplicationMessage('Options Saved');
+    } catch(error) {
+        displayApplicationMessage('Error Saving Options');
+    }
+}
+
 if(urlParams.get('embed')) {
     document.querySelectorAll('.hideOnEmbed').forEach(element => {
         element.classList.replace('hideOnEmbed', 'hidden');
@@ -144,15 +189,25 @@ if(urlParams.get('embed')) {
     textarea.disabled = true;
 }
 
-if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK || (window.localStorage.getItem(COLOR_MODE_CACHE_KEY) !== COLOR_MODE_LIGHT && (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches))) {
     toggleDarkMode(true);
 }
 
+if(window.localStorage.getItem(BOOLEAN_MODE_CACHE_KEY) === TRUE_VALUE) {
+    toggleBooleanMode(true);
+}
+
+if(window.localStorage.getItem(AUTO_LOG_MODE_CACHE_KEY) === TRUE_VALUE) {
+    toggleAutoLogMode(true);
+}
+
 window.matchMedia('(prefers-color-scheme: dark)').addListener(event => {
-    toggleDarkMode(event.matches);
+    if(!window.localStorage.getItem(COLOR_MODE_CACHE_KEY)) {
+        toggleDarkMode(event.matches);
+    }
 });
 
-if ('serviceWorker' in navigator) {
+if('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js?ver=3').then(function(registration) {
             // Registration was successful

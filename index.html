@@ -34,20 +34,21 @@
                     <div>
                         <label class="displayFlex">
                             Auto Log Mode
-                            <input type="checkbox"/>
+                            <input type="checkbox" id="autoLogModeCheckbox" onclick="toggleAutoLogMode(this.checked)"/>
                         </label>
                     </div>
 
                     <div>
                         <label class="displayFlex">
                             Boolean Mode
-                            <input type="checkbox" class="marginLeftAuto paddingLeftSmall"/>
+                            <input type="checkbox" id="booleanModeCheckbox" onclick="toggleBooleanMode(this.checked)" class="marginLeftAuto paddingLeftSmall"/>
                         </label>
                     </div>
                 </div>
 
                 <div class="footer">
                     <button onclick="hideDialog('options-modal')" type="button">Close</button>
+                    <button onclick="saveOptions()" type="button" class="primary">Save</button>
                 </div>
             </div>
         </div>
