@@ -11,6 +11,8 @@ const LEFT_BRACKET = '{';
 const RIGHT_BRACKET = '}';
 const LEFT_PARENTHASES = '(';
 const RIGHT_PARENTHASES = ')';
+const LEFT_SQUARE_BRACKET = '[';
+const RIGHT_SQUARE_BRACKET = ']';
 const SINGLE_QUOTE = "'";
 const DOUBLE_QUOTE = '"';
 const ENTER = 'Enter';
@@ -48,19 +50,24 @@ function logError(error) {
 function runJavascript() {
     resetConsole();
 
-	var javascriptToRun = textarea.value;
-    javascriptToRun = javascriptToRun.split('console.log').join('logToConsole');
-    var script = document.createElement('script');
+    try {
+        var javascriptToRun = textarea.value;
+        javascriptToRun = javascriptToRun.split('console.log').join('logToConsole');
+        var script = document.createElement('script');
+        
+        script.text = 'try {\n';
+        script.text += 'function runTest() {\n';
+        script.text += javascriptToRun;
+        script.text += '}\n';
+        script.text += 'runTest()';
+        script.text += '\n} catch(e) {\nlogError(e)\n}';
     
-    script.text = 'try {\n';
-    script.text += 'function runTest() {\n';
-    script.text += javascriptToRun;
-    script.text += '}\n';
-    script.text += 'runTest()';
-    script.text += '\n} catch(e) {\nlogError(e)\n}';
-
-    document.body.appendChild(script);
-    document.body.removeChild(script);
+        eval(script.text);
+        document.body.appendChild(script);
+        document.body.removeChild(script);
+    } catch(e) {
+        logError(e);
+    }
 }
 
 function toggleDarkMode() {
@@ -118,7 +125,6 @@ textarea.addEventListener('keydown', event => {
 
     switch(event.key) {
         case LEFT_BRACKET:
-            //Insert right bracket at ending select index
             event.preventDefault();
             textarea.selectionStart = startIndex;
             textarea.selectionEnd = startIndex;
@@ -131,7 +137,6 @@ textarea.addEventListener('keydown', event => {
             break;
 
         case LEFT_PARENTHASES:
-            //Insert right parenthases at ending select index
             event.preventDefault();
             textarea.selectionStart = startIndex;
             textarea.selectionEnd = startIndex;
@@ -139,6 +144,18 @@ textarea.addEventListener('keydown', event => {
             textarea.selectionStart = endIndex + 1;
             textarea.selectionEnd = endIndex + 1;
             document.execCommand('insertText', false, ')');
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            break;
+
+        case LEFT_SQUARE_BRACKET:
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, '[');
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            document.execCommand('insertText', false, ']');
             textarea.selectionStart = startIndex + 1;
             textarea.selectionEnd = endIndex + 1;
             break;
@@ -182,7 +199,7 @@ textarea.addEventListener('keydown', event => {
         case TAB_KEY:
             event.preventDefault();
             //Insert tab at index
-            if(value.charAt(endIndex) === ')' || value.charAt(endIndex) === '"' || value.charAt(endIndex) === "'") {
+            if([RIGHT_PARENTHASES, DOUBLE_QUOTE, SINGLE_QUOTE, BACK_TICK].indexOf(value.charAt(endIndex)) !== -1) {
                 textarea.selectionStart = endIndex + 1;
                 textarea.selectionEnd = endIndex + 1;
             } else {
@@ -197,24 +214,28 @@ textarea.addEventListener('keydown', event => {
             break;
 
         case RIGHT_PARENTHASES:
-            //If on right parenthases, skip over
-            if(startIndex === endIndex && value.charAt(endIndex) === ')') {
+            if(startIndex === endIndex && value.charAt(endIndex) === RIGHT_PARENTHASES) {
                 event.preventDefault();
                 textarea.selectionStart = endIndex + 1;
             }
             break;
 
         case RIGHT_BRACKET:
-            //If on right bracket, skip over
-            if(startIndex === endIndex && value.charAt(endIndex) === '}') {
+            if(startIndex === endIndex && value.charAt(endIndex) === RIGHT_BRACKET) {
+                event.preventDefault();
+                textarea.selectionStart = endIndex + 1;
+            }
+            break;
+
+        case RIGHT_SQUARE_BRACKET:
+            if(startIndex === endIndex && value.charAt(endIndex) === RIGHT_SQUARE_BRACKET) {
                 event.preventDefault();
                 textarea.selectionStart = endIndex + 1;
             }
             break;
 
         case ENTER:
-            //If certain characters, enter twice and move up
-            if(value.charAt(endIndex) === '}' && value.charAt(startIndex - 1) === '{') {
+            if(value.charAt(endIndex) === RIGHT_BRACKET && value.charAt(startIndex - 1) === LEFT_BRACKET) {
                 event.preventDefault();
                 document.execCommand('insertText', false , '\n\t\n');
                 textarea.selectionStart = endIndex + 2;
