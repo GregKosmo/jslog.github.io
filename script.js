@@ -108,11 +108,20 @@ async function share() {
     const urlValue = btoa(textarea.value);
     if(urlValue) {
         history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+
         try {
-            window.navigator.clipboard.writeText(window.location.href);
-            displayApplicationMessage('URL Copied to Clipboard');
-        } catch(e) {
-            displayApplicationMessage('Error Copying URL to Clipboard');
+            await navigator.share({
+                title: 'Js Log',
+                text: 'Check out my code on Js Log!',
+                url: window.location.href
+            })
+        } catch(error) {
+            try {
+                window.navigator.clipboard.writeText(window.location.href);
+                displayApplicationMessage('URL Copied to Clipboard');
+            } catch(e) {
+                displayApplicationMessage('Error Sharing Code Snippet');
+            }
         }
     }
 }
