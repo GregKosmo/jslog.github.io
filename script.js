@@ -225,5 +225,5 @@ textarea.addEventListener('keydown', event => {
 });
 /**
  * TODO: 
- *  - Basic features like tabbing, auto close "{", "(", """, and "'" symbols.
+ * - move light mode to options, make run farthest right button
  */
