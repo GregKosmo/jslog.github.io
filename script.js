@@ -3,7 +3,10 @@ var output = document.querySelector('#javascriptOutput');
 var darkMode = document.querySelector('#darkModeStylesheet');
 var darkModeCheckbox = document.querySelector('#darkModeCheckbox');
 var applicationMessage = document.querySelector('#applicationMessage');
+var embedTextarea = document.querySelector('#embedTextarea');
+var embedIframe = document.querySelector('#embedIframe');
 var htmlInstance = document.querySelector('#html');
+const urlParams = new URLSearchParams(window.location.search);
 const COLOR_MODE_CACHE_KEY = 'colorMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
@@ -104,31 +107,47 @@ function toggleDarkMode(enabled) {
 }
 
 async function share() {
-    //TODO: Copy url to clipboard
     const urlValue = btoa(textarea.value);
-    if(urlValue) {
-        history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
+    history.pushState(undefined, 'Js Log', `?e=${urlValue}`);
 
-        try {
-            await navigator.share({
-                title: 'Js Log',
-                text: 'Check out my code on Js Log!',
-                url: window.location.href
-            })
-        } catch(error) {
-            try {
-                window.navigator.clipboard.writeText(window.location.href);
-                displayApplicationMessage('URL Copied to Clipboard');
-            } catch(e) {
-                displayApplicationMessage('Error Sharing Code Snippet');
-            }
-        }
+    try {
+        await navigator.share({
+            title: 'Js Log',
+            text: 'Check out my code on Js Log!',
+            url: window.location.href
+        })
+    } catch(error) {
+        writeToClipboard(window.location.href, 'URL Copied to Clipboard', 'Error Sharing Code Snippet');
     }
+}
+
+function writeToClipboard(string, successMessage, failMessage) {
+    try {
+        window.navigator.clipboard.writeText(string);
+        displayApplicationMessage(successMessage);
+    } catch(e) {
+        displayApplicationMessage(failMessage);
+    }
+}
+
+function embed() {
+    const urlValue = `${location.host}${location.pathname}?e=${btoa(textarea.value)}&embed=true`;
+    
+    embedTextarea.value = `<iframe src=${urlValue}></iframe>`;
+    embedIframe.src = urlValue;
+}
+
+if(urlParams.get('embed')) {
+    document.querySelectorAll('.hideOnEmbed').forEach(element => {
+        element.classList.replace('hideOnEmbed', 'hidden');
+    });
+    textarea.disabled = true;
 }
 
 if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     toggleDarkMode(true);
 }
+
 window.matchMedia('(prefers-color-scheme: dark)').addListener(event => {
     toggleDarkMode(event.matches);
 });

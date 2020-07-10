@@ -5,8 +5,8 @@
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 		<title>Js Log</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel="stylesheet" href="style.css?ver=3">
-        <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css?ver=2" disabled="true">
+        <link rel="stylesheet" href="style.css?ver=4">
+        <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css?ver=3" disabled="true">
         <link rel="icon" href="favicon.ico">
         <meta name="description" content="Lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console">
         <link rel="manifest" href="/manifest.json?ver=2">
@@ -52,13 +52,33 @@
             </div>
         </div>
 
+        <div class="modal" id="embed-modal">
+            <div class="dialog">
+                <div class="header">
+                    Embed
+                </div>
+
+                <div class="content">
+                    To embed this code example on your page, place the following in your HTML:</br>
+                    <textarea id="embedTextarea" class="codeTextarea" disabled></textarea>
+                    Here is a preview of what it will look like:</br>
+                    <iframe id="embedIframe" class="embedIframe"></iframe>
+                </div>
+
+                <div class="footer">
+                    <button onclick="hideDialog('embed-modal')" type="button">Close</button>
+                    <button onclick="writeToClipboard(embedTextarea.value, 'Copied to Clipboard', 'Error Copying to Clipboard')" type="button" class="primary">Copy</button>
+                </div>
+            </div>
+        </div>
+
         <form class="codeForm">
             <label for="javascriptToRun" class="hidden">Code</label>
             <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..." spellcheck="false" autocorrect="off" autocapitalize="none"></textarea>
 
-            <div class="controls">
+            <div class="controls hideOnEmbed">
                 <button onclick="showDialog('options-modal')" type="button">Options</button>
-                <button onclick="embed()" type="button">Embed</button>
+                <button onclick="embed(); showDialog('embed-modal')" type="button">Embed</button>
                 <button onclick="share()" type="button">Share</button>
                 <button onclick="runJavascript()" type="button" class="primary">Run</button>
             </div>
@@ -67,5 +87,5 @@
         </form>
     </body>
     
-    <script src='script.js?ver=7'></script>
+    <script src='script.js?ver=8'></script>
 </html>

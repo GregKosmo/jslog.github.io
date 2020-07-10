@@ -45,6 +45,7 @@ body {
     transition: .3s all;
     transition-property: top;
     box-sizing: border-box;
+    z-index: 3;
 }
 
 .applicationMessage.shown {
@@ -153,4 +154,8 @@ pre {
 
 .marginLeftAuto {
     margin-left: auto;
+}
+
+.embedIframe {
+    width: 100%;
 }
