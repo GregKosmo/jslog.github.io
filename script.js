@@ -14,6 +14,7 @@ const RIGHT_PARENTHASES = ')';
 const SINGLE_QUOTE = "'";
 const DOUBLE_QUOTE = '"';
 const ENTER = 'Enter';
+const BACK_TICK = '`';
 
 function displayApplicationMessage(message) {
     applicationMessage.innerText = message;
@@ -142,15 +143,38 @@ textarea.addEventListener('keydown', event => {
             textarea.selectionEnd = endIndex + 1;
             break;
 
-        case SINGLE_QUOTE || DOUBLE_QUOTE:
-            //Insert matching quote at ending select index. Get which it is from event.key
+        case SINGLE_QUOTE:
             event.preventDefault();
             textarea.selectionStart = startIndex;
             textarea.selectionEnd = startIndex;
-            document.execCommand('insertText', false, event.key);
+            document.execCommand('insertText', false, "'");
             textarea.selectionStart = endIndex + 1;
             textarea.selectionEnd = endIndex + 1;
-            document.execCommand('insertText', false, event.key);
+            document.execCommand('insertText', false, "'");
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            break;
+
+        case DOUBLE_QUOTE:
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, '"');
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            document.execCommand('insertText', false, '"');
+            textarea.selectionStart = startIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            break;
+
+        case BACK_TICK:
+            event.preventDefault();
+            textarea.selectionStart = startIndex;
+            textarea.selectionEnd = startIndex;
+            document.execCommand('insertText', false, '`');
+            textarea.selectionStart = endIndex + 1;
+            textarea.selectionEnd = endIndex + 1;
+            document.execCommand('insertText', false, '`');
             textarea.selectionStart = startIndex + 1;
             textarea.selectionEnd = endIndex + 1;
             break;
