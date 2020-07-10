@@ -9,7 +9,7 @@
         <link id="darkModeStylesheet" rel="stylesheet" href="darkmode.css?ver=2" disabled="true">
         <link rel="icon" href="favicon.ico">
         <meta name="description" content="Lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console">
-        <link rel="manifest" href="/manifest.json">
+        <link rel="manifest" href="/manifest.json?ver=2">
         <meta name="theme-color" content="#3b3b3b"/>
         <link rel="apple-touch-icon" href="/icon-192.png">
 	</head>
@@ -19,7 +19,7 @@
 
         <form class="codeForm">
             <label for="javascriptToRun" class="hidden">Code</label>
-            <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..." spellcheck="false"></textarea>
+            <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..." spellcheck="false" autocorrect="off" autocapitalize="none"></textarea>
 
             <div class="controls">
                 <button onclick="runJavascript()" type="button">Run</button>
@@ -31,5 +31,5 @@
         </form>
     </body>
     
-    <script src='script.js?ver=4'></script>
+    <script src='script.js?ver=5'></script>
 </html>
