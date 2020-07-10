@@ -20,7 +20,7 @@ body {
     height: 100%;
     box-sizing: border-box;
     resize: none;
-    border: 1px solid rgb(197, 197, 197);
+    border: 1px solid #c5c5c5;
     padding: 8px;
     tab-size: 4;
     white-space: nowrap;
@@ -36,7 +36,7 @@ body {
 
 .applicationMessage {
     color: white;
-    background: rgb(0, 69, 197);
+    background: #0045c5;
     position: fixed;
     width: 100%;
     padding: 8px 8px;
@@ -66,8 +66,19 @@ button {
     border-width: 2px;
 }
 
+button.primary {
+    background: #0045c5;
+    color: white;
+}
+
 button, textarea {
     font-size: 1rem;
+}
+
+input[type="checkbox"] {
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
 }
 
 pre {
@@ -81,4 +92,65 @@ pre {
 .hidden {
     position: absolute;
     bottom: 100%;
+}
+
+.modal:not(.shown) {
+    display: none;
+}
+
+.modal.shown {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #00000080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.dialog {
+    position: absolute;
+    max-width: 950px;
+    z-index: 2;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background-color: #faf7f7;
+    border-radius: 4px;
+    border-width: 2px;
+}
+
+.dialog .header {
+    background-color: #c4c4c4;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.dialog .content {
+    padding: 8px;
+}
+
+.dialog .footer {
+    text-align: center;
+    padding: 8px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.noScroll {
+    overflow: hidden;
+}
+
+.displayFlex {
+    display: flex;
+}
+
+.marginLeftAuto {
+    margin-left: auto;
 }

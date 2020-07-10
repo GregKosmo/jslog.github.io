@@ -13,10 +13,18 @@ button {
     color: white;
 }
 
+.dialog {
+    background-color: #3b3b3b;
+}
+
+.dialog .header {
+    background-color: #333333;
+}
+
 .codeTextarea {
-    border: 1px solid rgb(51, 51, 51)
+    border: 1px solid #333333
 }
 
 .error {
-    color: rgb(255, 49, 49);
+    color: #ff3131;
 }

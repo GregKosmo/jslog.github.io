@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 	<head>
 		<meta charset='utf-8'>
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -17,19 +17,55 @@
 	<body>
         <div id="applicationMessage" class="applicationMessage"></div>
 
+        <div class="modal" id="options-modal">
+            <div class="dialog">
+                <div class="header">
+                    Options
+                </div>
+
+                <div class="content">
+                    <div>
+                        <label class="displayFlex">
+                            Dark Mode
+                            <input type="checkbox" id="darkModeCheckbox" onclick="toggleDarkMode(this.checked)" class="marginLeftAuto"/>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="displayFlex">
+                            Auto Log Mode
+                            <input type="checkbox"/>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="displayFlex">
+                            Boolean Mode
+                            <input type="checkbox" class="marginLeftAuto paddingLeftSmall"/>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <button onclick="hideDialog('options-modal')" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+
         <form class="codeForm">
             <label for="javascriptToRun" class="hidden">Code</label>
             <textarea id="javascriptToRun" class="codeTextarea" placeholder="Enter code here..." spellcheck="false" autocorrect="off" autocapitalize="none"></textarea>
 
             <div class="controls">
-                <button onclick="runJavascript()" type="button">Run</button>
+                <button onclick="showDialog('options-modal')" type="button">Options</button>
+                <button onclick="embed()" type="button">Embed</button>
                 <button onclick="share()" type="button">Share</button>
-                <button onclick="toggleDarkMode()" type="button" id="darkModeButton">Dark Mode</button>
+                <button onclick="runJavascript()" type="button" class="primary">Run</button>
             </div>
             
             <pre id="javascriptOutput" class="javascriptLog"></pre>
         </form>
     </body>
     
-    <script src='script.js?ver=5'></script>
+    <script src='script.js?ver=6'></script>
 </html>

@@ -1,8 +1,9 @@
 var textarea = document.querySelector('#javascriptToRun');
 var output = document.querySelector('#javascriptOutput');
 var darkMode = document.querySelector('#darkModeStylesheet');
-var darkModeButton = document.querySelector('#darkModeButton');
+var darkModeCheckbox = document.querySelector('#darkModeCheckbox');
 var applicationMessage = document.querySelector('#applicationMessage');
+var htmlInstance = document.querySelector('#html');
 const COLOR_MODE_CACHE_KEY = 'colorMode';
 const COLOR_MODE_DARK = 'dark';
 const COLOR_MODE_LIGHT = 'light';
@@ -17,6 +18,28 @@ const SINGLE_QUOTE = "'";
 const DOUBLE_QUOTE = '"';
 const ENTER = 'Enter';
 const BACK_TICK = '`';
+
+function hideDialog(dialogId) {
+    var dialog = document.getElementById(dialogId);
+
+    if(dialog !== undefined) {
+        dialog.classList.remove('shown');
+        dialog.classList.add('hidden');
+    }
+
+    htmlInstance.classList.remove('noScroll');
+}
+
+function showDialog(dialogId) {
+    var dialog = document.getElementById(dialogId);
+
+    if(dialog !== undefined) {
+        dialog.classList.remove('hidden');
+        dialog.classList.add('shown');
+    }
+
+    htmlInstance.classList.add('noScroll');
+}
 
 function displayApplicationMessage(message) {
     applicationMessage.innerText = message;
@@ -70,15 +93,13 @@ function runJavascript() {
     }
 }
 
-function toggleDarkMode() {
-    darkMode.disabled = !darkMode.disabled;
-    window.localStorage.setItem(COLOR_MODE_CACHE_KEY, darkMode.disabled ? COLOR_MODE_LIGHT : COLOR_MODE_DARK);
-    
-    if(darkMode.disabled) {
-        darkModeButton.innerText = 'Dark Mode';
-    } else {
-        darkModeButton.innerText = 'Light Mode';
+function toggleDarkMode(enabled) {
+    if(darkModeCheckbox.checked !== enabled) {
+        darkModeCheckbox.checked = enabled;
     }
+
+    darkMode.disabled = !enabled;
+    window.localStorage.setItem(COLOR_MODE_CACHE_KEY, darkMode.disabled ? COLOR_MODE_LIGHT : COLOR_MODE_DARK);
 }
 
 async function share() {
@@ -95,9 +116,12 @@ async function share() {
     }
 }
 
-if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK) {
-    toggleDarkMode();
+if(window.localStorage.getItem(COLOR_MODE_CACHE_KEY) === COLOR_MODE_DARK || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    toggleDarkMode(true);
 }
+window.matchMedia('(prefers-color-scheme: dark)').addListener(event => {
+    toggleDarkMode(event.matches);
+});
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
