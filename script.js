@@ -86,6 +86,7 @@ function runJavascript() {
         script.text += '\n} catch(e) {\nlogError(e)\n}';
     
         eval(script.text);
+        resetConsole();
         document.body.appendChild(script);
         document.body.removeChild(script);
     } catch(e) {
