@@ -171,7 +171,9 @@ async function share() {
             url: window.location.href
         })
     } catch(error) {
-        writeToClipboard(window.location.href, 'URL Copied to Clipboard', 'Error Sharing Code Snippet');
+        if(!(error instanceof DOMException)) {
+            writeToClipboard(window.location.href, 'URL Copied to Clipboard', 'Error Sharing Code Snippet');
+        }
     }
 }
 
