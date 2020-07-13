@@ -1,7 +1,7 @@
 # jslog.github.io
 Page source for jslog.dev
 
-jslog.dev is a lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console. It is a complete client-side PWA and can be used completely offline if desired. It is also mobile friendly unline a lot of other online testing environments.
+jslog.dev is a lightweight, fast, mobile friendly environment to test javascript and see its output in a virtual console. It is a complete client-side PWA and can be used completely offline if desired.
 
 The initial intent of the app was to create an extremely simple place to log to console and share the results. No more having to use the browser console, no more having to set up a complicated online testing tool just to find out it doesn't have virtual console output. This site has one job and it does that job extremely well. There are no plans to expand it beyond what it is today.
 
