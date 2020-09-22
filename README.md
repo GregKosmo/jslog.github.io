@@ -24,7 +24,7 @@ Embedding allows you to include a code snippet on your page. Retains boolean and
 
 Sharing creates a shareable link and copies it to your clipboard. On mobile it opens the native OS sharing functionality via the web share API.
 
-Basic code completion features like auto-closing parenthases, brackes, quotes, etc help you write code quicker. Mostly in place to keep the transition between vscode and the app smoother. Because of some of these features though, unfortunately the app does not play will with Firefox. The method by which the features are applied is currently bugged in Firefox. Check the closed issues if you'd like to find the link to follow.
+Basic code completion features like auto-closing parenthases, brackes, quotes, etc help you write code quicker. Mostly in place to keep the transition between vscode and the app smoother.
 
 Dark mode saves your eyeballs. Based on your OS's theme setting initially, you can override it via the options if you'd like.
 
